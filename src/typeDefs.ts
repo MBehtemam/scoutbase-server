@@ -41,9 +41,16 @@ const typeDefs = gql`
     user: User
   }
 
+  type Continent {
+    id: ID!
+    name: String
+    code: String
+  }
+
   type Query {
     movies: [Movie]
     countries: [Country]
+    continents: [Continent]
   }
 `;
 

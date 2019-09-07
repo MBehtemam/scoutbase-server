@@ -2,8 +2,20 @@ import { ApolloServer, gql } from "apollo-server";
 import SERVER_CONFIG from "./config/server";
 import resolvers from "./resolvers";
 import typeDefs from "./typeDefs";
+import knex from "knex";
+import knexConfig from "./config/knexConfig";
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const Knex = knex(knexConfig);
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  context: () => ({
+    db: {
+      continentDB: Knex("continent")
+    }
+  })
+});
 
 server.listen().then(url => {
   console.log(`Server Listen on ${url.port}`);

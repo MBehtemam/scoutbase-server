@@ -37,9 +37,21 @@ const typeDefs = apollo_server_1.gql `
     name: String!
   }
 
+  type loginResponse {
+    token: String
+    user: User
+  }
+
+  type Continent {
+    id: ID!
+    name: String
+    code: String
+  }
+
   type Query {
     movies: [Movie]
     countries: [Country]
+    continents: [Continent]
   }
 `;
 exports.default = typeDefs;
