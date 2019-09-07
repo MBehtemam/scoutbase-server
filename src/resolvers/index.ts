@@ -22,16 +22,21 @@ const resolvers = {
         let allCountries = await ctx.db.countryDB.select("*");
         const allLanguages = await ctx.db.languageDB.select("*");
         const countrylanguage = await ctx.db.countrylanguageDB.select("*");
-
+        const countrycontinent = await ctx.db.countrycontinentDB.select("*");
+        const allContinents = await ctx.db.continentDB.select("*");
         allCountries = allCountries.map((country: any) => {
           const languageIds: string[] = countrylanguage
             .filter((cl: any) => cl.countryId === country.id.toString())
             .map((l: any) => parseInt(l.languageId));
+          const continentId = countrycontinent.find(
+            (cc: any) => cc.countryId == country.id
+          ).continentId;
           return {
             ...country,
             languages: allLanguages.filter((l: any) =>
               languageIds.includes(l.id)
-            )
+            ),
+            continent: allContinents.find((c: any) => c.id === continentId)
           };
         });
         return allCountries;

@@ -33,11 +33,14 @@ const resolvers = {
                 let allCountries = yield ctx.db.countryDB.select("*");
                 const allLanguages = yield ctx.db.languageDB.select("*");
                 const countrylanguage = yield ctx.db.countrylanguageDB.select("*");
+                const countrycontinent = yield ctx.db.countrycontinentDB.select("*");
+                const allContinents = yield ctx.db.continentDB.select("*");
                 allCountries = allCountries.map((country) => {
                     const languageIds = countrylanguage
                         .filter((cl) => cl.countryId === country.id.toString())
                         .map((l) => parseInt(l.languageId));
-                    return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)) });
+                    const continentId = countrycontinent.find((cc) => cc.countryId == country.id).continentId;
+                    return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)), continent: allContinents.find((c) => c.id === continentId) });
                 });
                 return allCountries;
             }

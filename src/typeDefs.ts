@@ -25,7 +25,7 @@ const typeDefs = gql`
   type Country {
     code: String!
     name: String!
-    continent: String!
+    continent: Continent!
     languages: [Language!]!
     currency: String
     phone: String
