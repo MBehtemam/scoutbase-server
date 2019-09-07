@@ -1,6 +1,7 @@
-import { gql } from "apollo-server";
-
-const typeDefs = gql`
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const apollo_server_1 = require("apollo-server");
+const typeDefs = apollo_server_1.gql `
   type Movie {
     title: String
     year: Int
@@ -41,5 +42,4 @@ const typeDefs = gql`
     countries: [Country]
   }
 `;
-
-export default typeDefs;
+exports.default = typeDefs;
