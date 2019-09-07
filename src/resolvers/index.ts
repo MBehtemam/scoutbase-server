@@ -7,6 +7,13 @@ const resolvers = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+    languages: async (parent: any, args: any, ctx: any, info: any) => {
+      try {
+        return await ctx.db.languageDB.select("*");
+      } catch (err) {
+        throw new Error(err);
+      }
     }
   }
 };

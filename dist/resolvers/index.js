@@ -19,6 +19,14 @@ const resolvers = {
             catch (err) {
                 throw new Error(err);
             }
+        }),
+        languages: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                return yield ctx.db.languageDB.select("*");
+            }
+            catch (err) {
+                throw new Error(err);
+            }
         })
     }
 };
