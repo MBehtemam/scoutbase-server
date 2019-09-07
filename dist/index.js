@@ -15,7 +15,9 @@ const server = new apollo_server_1.ApolloServer({
     context: () => ({
         db: {
             continentDB: Knex("continent"),
-            languageDB: Knex("language")
+            languageDB: Knex("language"),
+            countryDB: Knex("country"),
+            countrylanguageDB: Knex("countrylanguage")
         }
     })
 });

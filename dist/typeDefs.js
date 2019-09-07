@@ -24,12 +24,12 @@ const typeDefs = apollo_server_1.gql `
   }
 
   type Country {
-    code: Int!
+    code: String!
     name: String!
     continent: String!
-    languages: [String!]!
+    languages: [Language!]!
     currency: String
-    phone: Int
+    phone: String
   }
 
   type User {

@@ -27,6 +27,23 @@ const resolvers = {
             catch (err) {
                 throw new Error(err);
             }
+        }),
+        countries: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                let allCountries = yield ctx.db.countryDB.select("*");
+                const allLanguages = yield ctx.db.languageDB.select("*");
+                const countrylanguage = yield ctx.db.countrylanguageDB.select("*");
+                allCountries = allCountries.map((country) => {
+                    const languageIds = countrylanguage
+                        .filter((cl) => cl.countryId === country.id.toString())
+                        .map((l) => parseInt(l.languageId));
+                    return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)) });
+                });
+                return allCountries;
+            }
+            catch (err) {
+                throw new Error(err);
+            }
         })
     }
 };
