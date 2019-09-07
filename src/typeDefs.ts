@@ -36,6 +36,11 @@ const typeDefs = gql`
     name: String!
   }
 
+  type loginResponse {
+    token: String
+    user: User
+  }
+
   type Query {
     movies: [Movie]
     countries: [Country]
