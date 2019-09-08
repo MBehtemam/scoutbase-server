@@ -61,7 +61,6 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const has = yield this.hasUserByUserName(username);
-                console.log(has);
                 if (has) {
                     throw new Error("user already exist");
                 }
@@ -71,9 +70,7 @@ class UserController {
                         password,
                         name: ""
                     });
-                    console.log(userId);
                     const user = yield this.getUserById(userId[0]);
-                    console.log(user);
                     return this.addTokenToUser(user);
                 }
             }

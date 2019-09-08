@@ -4,7 +4,7 @@ const resolvers = {
   Query: {
     continents: async (parent: any, args: any, ctx: any, info: any) => {
       try {
-        return await ctx.db.continentDB.select("*");
+        return await ctx.controllers.continent.getAll();
       } catch (err) {
         throw new Error(err);
       }

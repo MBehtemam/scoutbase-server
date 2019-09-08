@@ -4,6 +4,7 @@ interface IContextResponse {
     | undefined;
   controllers: {
     user: any;
+    continent: any;
   };
 }
 export default IContextResponse;

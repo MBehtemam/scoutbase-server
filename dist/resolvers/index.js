@@ -13,7 +13,7 @@ const resolvers = {
     Query: {
         continents: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                return yield ctx.db.continentDB.select("*");
+                return yield ctx.controllers.continent.getAll();
             }
             catch (err) {
                 throw new Error(err);
