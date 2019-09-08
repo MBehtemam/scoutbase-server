@@ -61,6 +61,7 @@ const typeDefs = apollo_server_1.gql `
   }
   type Mutation {
     createUser(username: String, password: String): UserResponse
+    login(username: String, password: String): UserResponse
   }
 `;
 exports.default = typeDefs;

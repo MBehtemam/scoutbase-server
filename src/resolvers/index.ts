@@ -79,6 +79,29 @@ const resolvers = {
       } catch (err) {
         throw new Error(err);
       }
+    },
+    login: async (
+      parent: any,
+      { username, password }: { username: string; password: string },
+      ctx: any,
+      info: any
+    ) => {
+      try {
+        const user = ctx.db.userDB
+          .select()
+          .where({ username, password })
+          .first();
+        if (user) {
+          return {
+            user,
+            token: JWT.sign({ id: user.id, name: user.name }, "something")
+          };
+        } else {
+          throw new Error("User not exist");
+        }
+      } catch (err) {
+        throw new Error(err);
+      }
     }
   }
 };

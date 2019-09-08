@@ -83,6 +83,26 @@ const resolvers = {
             catch (err) {
                 throw new Error(err);
             }
+        }),
+        login: (parent, { username, password }, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const user = ctx.db.userDB
+                    .select()
+                    .where({ username, password })
+                    .first();
+                if (user) {
+                    return {
+                        user,
+                        token: jsonwebtoken_1.default.sign({ id: user.id, name: user.name }, "something")
+                    };
+                }
+                else {
+                    throw new Error("User not exist");
+                }
+            }
+            catch (err) {
+                throw new Error(err);
+            }
         })
     }
 };
