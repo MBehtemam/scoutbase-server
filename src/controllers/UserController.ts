@@ -1,7 +1,7 @@
 import JWT from "jsonwebtoken";
-import IDB from "../interfaces/IDB";
-import DB from "../DB";
 import secretKeys from "../config/secretKeys";
+import DB from "../DB";
+import IDB from "../interfaces/IDB";
 
 class UserController {
   db: IDB;
@@ -40,11 +40,15 @@ class UserController {
   }
   async createUser(username: string, password: string) {
     try {
-      const has = this.hasUserByUserName(username);
+      const has = await this.hasUserByUserName(username);
       if (has) {
         throw new Error("user already exist");
       } else {
-        const userId = await this.db.user.inser({ username, password });
+        const userId = await this.db.user.insert({
+          username,
+          password,
+          name: ""
+        });
         const user = await this.getUserById(userId[0]);
         return this.addTokenToUser(user);
       }
@@ -65,10 +69,11 @@ class UserController {
   }
   async getUserById(id: string) {
     try {
-      return await this.db.user
+      const user = await this.db
+        .Knex("user")
         .select()
-        .where("id", id)
-        .first();
+        .where("id", id);
+      return user[0];
     } catch (err) {
       return err;
     }

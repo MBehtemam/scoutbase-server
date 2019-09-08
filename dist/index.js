@@ -4,20 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const apollo_server_1 = require("apollo-server");
+const controllers_1 = __importDefault(require("./controllers"));
 const resolvers_1 = __importDefault(require("./resolvers"));
 const typeDefs_1 = __importDefault(require("./typeDefs"));
-const knex_1 = __importDefault(require("knex"));
-const knexConfig_1 = __importDefault(require("./config/knexConfig"));
-const controllers_1 = __importDefault(require("./controllers"));
-const Knex = knex_1.default(knexConfig_1.default);
 const server = new apollo_server_1.ApolloServer({
-    typeDefs: typeDefs_1.default,
-    resolvers: resolvers_1.default,
     context: ({ req }) => ({
         controllers: controllers_1.default,
         user: controllers_1.default.user.authenticate(req.token)
-    })
+    }),
+    resolvers: resolvers_1.default,
+    typeDefs: typeDefs_1.default
 });
-server.listen().then(url => {
+server.listen().then((url) => {
     console.log(`Server Listen on ${url.port}`);
 });

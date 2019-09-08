@@ -13,8 +13,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const DB_1 = __importDefault(require("../DB"));
 const secretKeys_1 = __importDefault(require("../config/secretKeys"));
+const DB_1 = __importDefault(require("../DB"));
 class UserController {
     constructor() {
         this.db = DB_1.default;
@@ -60,13 +60,20 @@ class UserController {
     createUser(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const has = this.hasUserByUserName(username);
+                const has = yield this.hasUserByUserName(username);
+                console.log(has);
                 if (has) {
                     throw new Error("user already exist");
                 }
                 else {
-                    const userId = yield this.db.user.inser({ username, password });
+                    const userId = yield this.db.user.insert({
+                        username,
+                        password,
+                        name: ""
+                    });
+                    console.log(userId);
                     const user = yield this.getUserById(userId[0]);
+                    console.log(user);
                     return this.addTokenToUser(user);
                 }
             }
@@ -92,10 +99,11 @@ class UserController {
     getUserById(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.db.user
+                const user = yield this.db
+                    .Knex("user")
                     .select()
-                    .where("id", id)
-                    .first();
+                    .where("id", id);
+                return user[0];
             }
             catch (err) {
                 return err;
