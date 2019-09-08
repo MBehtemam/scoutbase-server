@@ -53,6 +53,11 @@ const typeDefs = gql`
     code: String
     native: String
   }
+  type Director{
+    id:ID!
+    name:String
+    birthday
+  }
   type Query {
     movies: [Movie]
     countries: [Country]
