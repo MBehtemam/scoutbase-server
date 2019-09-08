@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const resolvers = {
     Query: {
-        movies: () => [],
         continents: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
             try {
                 return yield ctx.db.continentDB.select("*");
@@ -51,6 +50,24 @@ const resolvers = {
             catch (err) {
                 throw new Error(err);
             }
+        }),
+        movies: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
+            const allMovies = yield ctx.db.movieDB.select();
+            const allActors = yield ctx.db.actorDB.select();
+            const allDirectors = yield ctx.db.directorDB.select();
+            const allMovieActor = yield ctx.db.movieActorDB.select();
+            const allMovieDirector = yield ctx.db.movieDirectorDB.select();
+            return allMovies.map((movie) => {
+                const actorsIds = allMovieActor
+                    .filter((m) => m.movieId === movie.id)
+                    .map((a) => a.actorId);
+                const directorsId = allMovieDirector
+                    .filter((m) => m.movieId === movie.id)
+                    .map((d) => d.directorId);
+                return Object.assign(Object.assign({}, movie), { directors: allDirectors.filter((d) => directorsId.includes(d.id)), actors: allActors.filter((a) => actorsIds.includes(a.id)), scoutbase_rating: (Math.random() * (9 - 5 + 1) + 5)
+                        .toFixed(2)
+                        .toString() });
+            });
         })
     },
     Mutation: {
