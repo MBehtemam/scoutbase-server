@@ -16,7 +16,10 @@ join countrylanguage on countrylanguage.languageId  = language.id
 where languageId = 1
    */
   try {
-    const countries = await Knex("country").select("*");
+    const countries = await Knex("user")
+      .select("*")
+      .where("id", "1")
+      .first();
 
     console.log(countries);
     return countries;

@@ -1,4 +1,4 @@
-import Knex = require("knex");
+import JWT from "jsonwebtoken";
 
 const resolvers = {
   Query: {
@@ -40,6 +40,42 @@ const resolvers = {
           };
         });
         return allCountries;
+      } catch (err) {
+        throw new Error(err);
+      }
+    }
+  },
+  Mutation: {
+    createUser: async (
+      parent: any,
+      { username, password }: { username: string; password: string },
+      ctx: any,
+      info: any
+    ) => {
+      try {
+        const userExists = await ctx.db.userDB
+          .select()
+          .where("username", username)
+          .first();
+        if (userExists) {
+          throw new Error("user already exists");
+        } else {
+          const user = await ctx.db.userDB.insert({
+            username,
+            password,
+            name: ""
+          });
+          const newUser = await ctx.db
+            .Knex("user")
+            .select()
+            .where("id", user[0].toString())
+            .first();
+
+          return {
+            user: newUser,
+            token: JWT.sign({ id: newUser.id, name: newUser.name }, "something")
+          };
+        }
       } catch (err) {
         throw new Error(err);
       }

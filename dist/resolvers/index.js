@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const resolvers = {
     Query: {
         movies: () => [],
@@ -43,6 +47,38 @@ const resolvers = {
                     return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)), continent: allContinents.find((c) => c.id === continentId) });
                 });
                 return allCountries;
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        })
+    },
+    Mutation: {
+        createUser: (parent, { username, password }, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const userExists = yield ctx.db.userDB
+                    .select()
+                    .where("username", username)
+                    .first();
+                if (userExists) {
+                    throw new Error("user already exists");
+                }
+                else {
+                    const user = yield ctx.db.userDB.insert({
+                        username,
+                        password,
+                        name: ""
+                    });
+                    const newUser = yield ctx.db
+                        .Knex("user")
+                        .select()
+                        .where("id", user[0].toString())
+                        .first();
+                    return {
+                        user: newUser,
+                        token: jsonwebtoken_1.default.sign({ id: newUser.id, name: newUser.name }, "something")
+                    };
+                }
             }
             catch (err) {
                 throw new Error(err);

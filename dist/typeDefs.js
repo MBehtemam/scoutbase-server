@@ -17,12 +17,6 @@ const typeDefs = apollo_server_1.gql `
     country: Country
   }
 
-  type Director {
-    name: String
-    birthday: String
-    country: Country
-  }
-
   type Country {
     code: String!
     name: String!
@@ -37,7 +31,7 @@ const typeDefs = apollo_server_1.gql `
     name: String!
   }
 
-  type loginResponse {
+  type UserResponse {
     token: String
     user: User
   }
@@ -54,11 +48,19 @@ const typeDefs = apollo_server_1.gql `
     code: String
     native: String
   }
+  type Director {
+    id: ID!
+    name: String
+    birthday: String
+  }
   type Query {
     movies: [Movie]
     countries: [Country]
     continents: [Continent]
     languages: [Language]
+  }
+  type Mutation {
+    createUser(username: String, password: String): UserResponse
   }
 `;
 exports.default = typeDefs;

@@ -21,7 +21,9 @@ const server = new ApolloServer({
       directorDB: Knex("director"),
       movieDB: Knex("movie"),
       movieActorDB: Knex("movie_actor"),
-      movieDirectorDB: Knex("movie_director")
+      movieDirectorDB: Knex("movie_director"),
+      userDB: Knex("user"),
+      Knex: Knex
     }
   })
 });
