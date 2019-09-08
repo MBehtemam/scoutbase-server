@@ -18,7 +18,9 @@ const server = new ApolloServer({
       countrylanguageDB: Knex("countrylanguage"),
       countrycontinentDB: Knex("countrycontinent"),
       actorDB: Knex("actor"),
-      director: Knex("director")
+      directorDB: Knex("director"),
+      movieDB: Knex("movie"),
+      movieActorDB: Knex("movie_actor")
     }
   })
 });
