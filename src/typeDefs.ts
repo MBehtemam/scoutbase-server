@@ -53,6 +53,7 @@ const typeDefs = gql`
     id: ID!
     name: String
     birthday: String
+    country: Country
   }
   type Query {
     movies: [Movie]

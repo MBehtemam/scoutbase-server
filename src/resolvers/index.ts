@@ -72,7 +72,18 @@ const resolvers = {
       }: { name: string; birthday: string; countryId: string },
       ctx: any,
       info: any
-    ) => await ctx.controllers.actor.createActor(name, birthday, countryId)
+    ) => await ctx.controllers.actor.createActor(name, birthday, countryId),
+    createDirector: async (
+      parent: any,
+      {
+        name,
+        birthday,
+        countryId
+      }: { name: string; birthday: string; countryId: string },
+      ctx: any,
+      info: any
+    ) =>
+      await ctx.controllers.director.createDirector(name, birthday, countryId)
   }
 };
 

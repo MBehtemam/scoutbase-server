@@ -2,28 +2,28 @@ import DB from "../DB";
 import IDB from "../interfaces/IDB";
 import CountryController from "./CountryController";
 
-class ActorController {
+class DirectorController {
   db: IDB;
   countryController: any;
   constructor() {
     this.db = DB;
     this.countryController = new CountryController();
   }
-  async createActor(name: string, birthday: string, countryId: string) {
+  async createDirector(name: string, birthday: string, countryId: string) {
     try {
-      const actorInserted = await this.db.actor.insert({
+      const directorInserted = await this.db.director.insert({
         name,
         birthday,
         countryId
       });
       const country = await this.countryController.getById(countryId);
-      let actor = await this.db
-        .Knex("actor")
+      let director = await this.db
+        .Knex("director")
         .select()
-        .where("id", actorInserted[0])
+        .where("id", directorInserted[0])
         .first();
       return {
-        ...actor,
+        ...director,
         country
       };
     } catch (err) {
@@ -32,4 +32,4 @@ class ActorController {
   }
 }
 
-export default ActorController;
+export default DirectorController;

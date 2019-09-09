@@ -54,6 +54,7 @@ const typeDefs = apollo_server_1.gql `
     id: ID!
     name: String
     birthday: String
+    country: Country
   }
   type Query {
     movies: [Movie]

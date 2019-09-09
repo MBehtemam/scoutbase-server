@@ -14,26 +14,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const DB_1 = __importDefault(require("../DB"));
 const CountryController_1 = __importDefault(require("./CountryController"));
-class ActorController {
+class DirectorController {
     constructor() {
         this.db = DB_1.default;
         this.countryController = new CountryController_1.default();
     }
-    createActor(name, birthday, countryId) {
+    createDirector(name, birthday, countryId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const actorInserted = yield this.db.actor.insert({
+                const directorInserted = yield this.db.director.insert({
                     name,
                     birthday,
                     countryId
                 });
                 const country = yield this.countryController.getById(countryId);
-                let actor = yield this.db
-                    .Knex("actor")
+                let director = yield this.db
+                    .Knex("director")
                     .select()
-                    .where("id", actorInserted[0])
+                    .where("id", directorInserted[0])
                     .first();
-                return Object.assign(Object.assign({}, actor), { country });
+                return Object.assign(Object.assign({}, director), { country });
             }
             catch (err) {
                 return err;
@@ -41,4 +41,4 @@ class ActorController {
         });
     }
 }
-exports.default = ActorController;
+exports.default = DirectorController;
