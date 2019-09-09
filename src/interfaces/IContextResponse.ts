@@ -7,6 +7,7 @@ interface IContextResponse {
     continent: any;
     language: any;
     country: any;
+    actor: any;
   };
 }
 export default IContextResponse;

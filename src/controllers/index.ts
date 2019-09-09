@@ -1,3 +1,4 @@
+import ActorController from "./ActorController";
 import ContinentController from "./ContinentController";
 import CountryController from "./CountryController";
 import LanguageController from "./LanguageController";
@@ -7,7 +8,9 @@ const controllers: {
   continent: any;
   language: any;
   country: any;
+  actor: any;
 } = {
+  actor: new ActorController(),
   continent: new ContinentController(),
   country: new CountryController(),
   language: new LanguageController(),

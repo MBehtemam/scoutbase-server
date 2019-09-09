@@ -56,7 +56,8 @@ const resolvers = {
     },
     Mutation: {
         createUser: (parent, { username, password }, ctx, info) => __awaiter(void 0, void 0, void 0, function* () { return yield ctx.controllers.user.createUser(username, password); }),
-        login: (parent, { username, password }, ctx, info) => __awaiter(void 0, void 0, void 0, function* () { return yield ctx.controllers.user.loginUser(username, password); })
+        login: (parent, { username, password }, ctx, info) => __awaiter(void 0, void 0, void 0, function* () { return yield ctx.controllers.user.loginUser(username, password); }),
+        createActor: (parent, { name, birthday, countryId }, ctx, info) => __awaiter(void 0, void 0, void 0, function* () { return yield ctx.controllers.actor.createActor(name, birthday, countryId); })
     }
 };
 exports.default = resolvers;

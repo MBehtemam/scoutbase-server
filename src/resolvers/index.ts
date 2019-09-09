@@ -62,7 +62,17 @@ const resolvers = {
       { username, password }: { username: string; password: string },
       ctx: any,
       info: any
-    ) => await ctx.controllers.user.loginUser(username, password)
+    ) => await ctx.controllers.user.loginUser(username, password),
+    createActor: async (
+      parent: any,
+      {
+        name,
+        birthday,
+        countryId
+      }: { name: string; birthday: string; countryId: string },
+      ctx: any,
+      info: any
+    ) => await ctx.controllers.actor.createActor(name, birthday, countryId)
   }
 };
 

@@ -19,19 +19,46 @@ class CountryController {
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            let allCountries = yield this.db.country.select("*");
-            const allLanguages = yield this.db.language.select("*");
-            const countrylanguage = yield this.db.countrylanguage.select("*");
-            const countrycontinent = yield this.db.countrycontinent.select("*");
-            const allContinents = yield this.db.continent.select("*");
-            allCountries = allCountries.map((country) => {
-                const languageIds = countrylanguage
-                    .filter((cl) => cl.countryId === country.id.toString())
-                    .map((l) => parseInt(l.languageId));
-                const continentId = countrycontinent.find((cc) => cc.countryId == country.id).continentId;
-                return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)), continent: allContinents.find((c) => c.id === continentId) });
-            });
-            return allCountries;
+            try {
+                let allCountries = yield this.db.country.select("*");
+                const allLanguages = yield this.db.language.select("*");
+                const countrylanguage = yield this.db.countrylanguage.select("*");
+                const countrycontinent = yield this.db.countrycontinent.select("*");
+                const allContinents = yield this.db.continent.select("*");
+                allCountries = allCountries.map((country) => {
+                    const languageIds = countrylanguage
+                        .filter((cl) => cl.countryId === country.id.toString())
+                        .map((l) => parseInt(l.languageId));
+                    const continentId = countrycontinent.find((cc) => cc.countryId == country.id).continentId;
+                    return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)), continent: allContinents.find((c) => c.id === continentId) });
+                });
+                return allCountries;
+            }
+            catch (err) {
+                return err;
+            }
+        });
+    }
+    getById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const country = yield this.db.country
+                    .select()
+                    .where("id", id)
+                    .first();
+                const continentObject = yield this.db.countrycontinent
+                    .select()
+                    .where("countryId", id)
+                    .first();
+                const continent = yield this.db.continent
+                    .select()
+                    .where("id", continentObject.continentId)
+                    .first();
+                return Object.assign(Object.assign({}, country), { continent });
+            }
+            catch (err) {
+                return err;
+            }
         });
     }
 }

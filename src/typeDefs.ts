@@ -11,12 +11,14 @@ const typeDefs = gql`
   }
 
   type Actor {
+    id: ID!
     name: String
     birthday: String
     country: Country
   }
 
   type Country {
+    id: ID!
     code: String!
     name: String!
     continent: Continent!
@@ -61,6 +63,8 @@ const typeDefs = gql`
   type Mutation {
     createUser(username: String, password: String): UserResponse
     login(username: String, password: String): UserResponse
+    createActor(name: String, birthday: String, countryId: String): Actor
+    createDirector(name: String, birthday: String, countryId: String): Director
   }
 `;
 
