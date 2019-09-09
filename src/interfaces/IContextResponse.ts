@@ -5,6 +5,8 @@ interface IContextResponse {
   controllers: {
     user: any;
     continent: any;
+    language: any;
+    country: any;
   };
 }
 export default IContextResponse;

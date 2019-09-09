@@ -13,47 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DB_1 = __importDefault(require("../DB"));
-class ContinentController {
+class CountryController {
     constructor() {
         this.db = DB_1.default;
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.db.continent.select();
-            }
-            catch (err) {
-                return err;
-            }
-        });
-    }
-    getById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.db.continent
-                    .select()
-                    .where("id", id)
-                    .first();
-            }
-            catch (err) {
-                return err;
-            }
-        });
-    }
-    getByCountryId(countryId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { continentId } = yield this.db.countrycontinent
-                    .select()
-                    .where("countryId", countryId)
-                    .first();
-                const continent = yield this.getById(continentId);
-                return continent;
-            }
-            catch (err) {
-                return err;
-            }
+            let allCountries = yield this.db.country.select("*");
+            const allLanguages = yield this.db.language.select("*");
+            const countrylanguage = yield this.db.countrylanguage.select("*");
+            const countrycontinent = yield this.db.countrycontinent.select("*");
+            const allContinents = yield this.db.continent.select("*");
+            allCountries = allCountries.map((country) => {
+                const languageIds = countrylanguage
+                    .filter((cl) => cl.countryId === country.id.toString())
+                    .map((l) => parseInt(l.languageId));
+                const continentId = countrycontinent.find((cc) => cc.countryId == country.id).continentId;
+                return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)), continent: allContinents.find((c) => c.id === continentId) });
+            });
+            return allCountries;
         });
     }
 }
-exports.default = ContinentController;
+exports.default = CountryController;

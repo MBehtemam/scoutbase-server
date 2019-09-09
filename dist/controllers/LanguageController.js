@@ -13,42 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const DB_1 = __importDefault(require("../DB"));
-class ContinentController {
+class LanguageController {
     constructor() {
         this.db = DB_1.default;
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield this.db.continent.select();
-            }
-            catch (err) {
-                return err;
-            }
-        });
-    }
-    getById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.db.continent
-                    .select()
-                    .where("id", id)
-                    .first();
-            }
-            catch (err) {
-                return err;
-            }
-        });
-    }
-    getByCountryId(countryId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const { continentId } = yield this.db.countrycontinent
-                    .select()
-                    .where("countryId", countryId)
-                    .first();
-                const continent = yield this.getById(continentId);
-                return continent;
+                return yield this.db.language.select();
             }
             catch (err) {
                 return err;
@@ -56,4 +28,4 @@ class ContinentController {
         });
     }
 }
-exports.default = ContinentController;
+exports.default = LanguageController;

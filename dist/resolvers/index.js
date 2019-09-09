@@ -21,7 +21,7 @@ const resolvers = {
         }),
         languages: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                return yield ctx.db.languageDB.select("*");
+                return yield ctx.controllers.language.getAll();
             }
             catch (err) {
                 throw new Error(err);
@@ -29,19 +29,7 @@ const resolvers = {
         }),
         countries: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                let allCountries = yield ctx.db.countryDB.select("*");
-                const allLanguages = yield ctx.db.languageDB.select("*");
-                const countrylanguage = yield ctx.db.countrylanguageDB.select("*");
-                const countrycontinent = yield ctx.db.countrycontinentDB.select("*");
-                const allContinents = yield ctx.db.continentDB.select("*");
-                allCountries = allCountries.map((country) => {
-                    const languageIds = countrylanguage
-                        .filter((cl) => cl.countryId === country.id.toString())
-                        .map((l) => parseInt(l.languageId));
-                    const continentId = countrycontinent.find((cc) => cc.countryId == country.id).continentId;
-                    return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)), continent: allContinents.find((c) => c.id === continentId) });
-                });
-                return allCountries;
+                return yield ctx.controllers.country.getAll();
             }
             catch (err) {
                 throw new Error(err);
