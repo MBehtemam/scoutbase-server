@@ -23,6 +23,18 @@ const resolvers = {
         throw new Error(err);
       }
     },
+    country: async (
+      parent: any,
+      { code }: { code: string },
+      ctx: any,
+      info: any
+    ) => {
+      try {
+        return await ctx.controllers.country.getByCountryCode(code);
+      } catch (err) {
+        throw new Error(err);
+      }
+    },
     movies: async (parent: any, args: any, ctx: any, info: any) => {
       const allMovies = await ctx.db.movieDB.select();
       const allActors = await ctx.db.actorDB.select();

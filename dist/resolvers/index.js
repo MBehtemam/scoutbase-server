@@ -35,6 +35,14 @@ const resolvers = {
                 throw new Error(err);
             }
         }),
+        country: (parent, { code }, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                return yield ctx.controllers.country.getByCountryCode(code);
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        }),
         movies: (parent, args, ctx, info) => __awaiter(void 0, void 0, void 0, function* () {
             const allMovies = yield ctx.db.movieDB.select();
             const allActors = yield ctx.db.actorDB.select();

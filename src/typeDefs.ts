@@ -58,6 +58,7 @@ const typeDefs = gql`
   type Query {
     movies: [Movie]
     countries: [Country]
+    country(code: String): Country
     continents: [Continent]
     languages: [Language]
   }

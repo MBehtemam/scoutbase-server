@@ -61,5 +61,30 @@ class CountryController {
             }
         });
     }
+    getByCountryCode(code) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const country = yield this.db.country
+                    .select()
+                    .where("code", code.toUpperCase())
+                    .first();
+                if (!country) {
+                    throw new Error("Country not exists");
+                }
+                const continentObject = yield this.db.countrycontinent
+                    .select()
+                    .where("countryId", country.id)
+                    .first();
+                const continent = yield this.db.continent
+                    .select()
+                    .where("id", continentObject.continentId)
+                    .first();
+                return Object.assign(Object.assign({}, country), { continent });
+            }
+            catch (err) {
+                return err;
+            }
+        });
+    }
 }
 exports.default = CountryController;

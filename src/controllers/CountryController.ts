@@ -55,6 +55,31 @@ class CountryController {
       return err;
     }
   }
+  async getByCountryCode(code: string) {
+    try {
+      const country = await this.db.country
+        .select()
+        .where("code", code.toUpperCase())
+        .first();
+      if (!country) {
+        throw new Error("Country not exists");
+      }
+      const continentObject = await this.db.countrycontinent
+        .select()
+        .where("countryId", country.id)
+        .first();
+      const continent = await this.db.continent
+        .select()
+        .where("id", continentObject.continentId)
+        .first();
+      return {
+        ...country,
+        continent
+      };
+    } catch (err) {
+      return err;
+    }
+  }
 }
 
 export default CountryController;

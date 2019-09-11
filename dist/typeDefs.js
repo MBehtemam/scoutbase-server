@@ -59,6 +59,7 @@ const typeDefs = apollo_server_1.gql `
   type Query {
     movies: [Movie]
     countries: [Country]
+    country(code: String): Country
     continents: [Continent]
     languages: [Language]
   }
