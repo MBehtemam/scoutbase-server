@@ -4,11 +4,14 @@ import IDB from "../interfaces/IDB";
 class CountryController {
   db: IDB;
   constructor() {
-    this.db = DB;
+    this.db = new DB();
   }
   async getAll() {
     try {
       let allCountries = await this.db.country.select("*");
+      if (!allCountries) {
+        allCountries = await this.db.Knex("country").select("*");
+      }
       const allLanguages = await this.db.language.select("*");
       const countrylanguage = await this.db.countrylanguage.select("*");
       const countrycontinent = await this.db.countrycontinent.select("*");
@@ -18,7 +21,7 @@ class CountryController {
           .filter((cl: any) => cl.countryId === country.id.toString())
           .map((l: any) => parseInt(l.languageId));
         const continentId = countrycontinent.find(
-          (cc: any) => cc.countryId == country.id
+          (cc: any) => cc.countryId === country.id
         ).continentId;
         return {
           ...country,
@@ -36,15 +39,15 @@ class CountryController {
   async getById(id: string) {
     try {
       const country = await this.db.country
-        .select()
+        .select("*")
         .where("id", id)
         .first();
       const continentObject = await this.db.countrycontinent
-        .select()
+        .select("*")
         .where("countryId", id)
         .first();
       const continent = await this.db.continent
-        .select()
+        .select("*")
         .where("id", continentObject.continentId)
         .first();
       return {
@@ -57,19 +60,34 @@ class CountryController {
   }
   async getByCountryCode(code: string) {
     try {
-      const country = await this.db.country
-        .select()
+      console.log(code.toUpperCase());
+      let country = await this.db.country
+        .select("*")
         .where("code", code.toUpperCase())
         .first();
       if (!country) {
+        country = await this.db
+          .Knex("country")
+          .select("*")
+          .where("code", code.toUpperCase())
+          .first();
+      }
+      if (!country) {
         throw new Error("Country not exists");
       }
-      const continentObject = await this.db.countrycontinent
-        .select()
+      let continentObject = await this.db.countrycontinent
+        .select("*")
         .where("countryId", country.id)
         .first();
+      if (!continentObject) {
+        continentObject = await this.db
+          .Knex("countrycontinent")
+          .select("*")
+          .where("countryId", country.id)
+          .first();
+      }
       const continent = await this.db.continent
-        .select()
+        .select("*")
         .where("id", continentObject.continentId)
         .first();
       return {

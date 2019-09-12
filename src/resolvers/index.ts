@@ -1,5 +1,3 @@
-import JWT from "jsonwebtoken";
-
 const resolvers = {
   Query: {
     continents: async (parent: any, args: any, ctx: any, info: any) => {

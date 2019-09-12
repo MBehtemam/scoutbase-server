@@ -15,12 +15,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DB_1 = __importDefault(require("../DB"));
 class CountryController {
     constructor() {
-        this.db = DB_1.default;
+        this.db = new DB_1.default();
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 let allCountries = yield this.db.country.select("*");
+                if (!allCountries) {
+                    allCountries = yield this.db.Knex("country").select("*");
+                }
                 const allLanguages = yield this.db.language.select("*");
                 const countrylanguage = yield this.db.countrylanguage.select("*");
                 const countrycontinent = yield this.db.countrycontinent.select("*");
@@ -29,7 +32,7 @@ class CountryController {
                     const languageIds = countrylanguage
                         .filter((cl) => cl.countryId === country.id.toString())
                         .map((l) => parseInt(l.languageId));
-                    const continentId = countrycontinent.find((cc) => cc.countryId == country.id).continentId;
+                    const continentId = countrycontinent.find((cc) => cc.countryId === country.id).continentId;
                     return Object.assign(Object.assign({}, country), { languages: allLanguages.filter((l) => languageIds.includes(l.id)), continent: allContinents.find((c) => c.id === continentId) });
                 });
                 return allCountries;
@@ -43,15 +46,15 @@ class CountryController {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const country = yield this.db.country
-                    .select()
+                    .select("*")
                     .where("id", id)
                     .first();
                 const continentObject = yield this.db.countrycontinent
-                    .select()
+                    .select("*")
                     .where("countryId", id)
                     .first();
                 const continent = yield this.db.continent
-                    .select()
+                    .select("*")
                     .where("id", continentObject.continentId)
                     .first();
                 return Object.assign(Object.assign({}, country), { continent });
@@ -64,19 +67,34 @@ class CountryController {
     getByCountryCode(code) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const country = yield this.db.country
-                    .select()
+                console.log(code.toUpperCase());
+                let country = yield this.db.country
+                    .select("*")
                     .where("code", code.toUpperCase())
                     .first();
                 if (!country) {
+                    country = yield this.db
+                        .Knex("country")
+                        .select("*")
+                        .where("code", code.toUpperCase())
+                        .first();
+                }
+                if (!country) {
                     throw new Error("Country not exists");
                 }
-                const continentObject = yield this.db.countrycontinent
-                    .select()
+                let continentObject = yield this.db.countrycontinent
+                    .select("*")
                     .where("countryId", country.id)
                     .first();
+                if (!continentObject) {
+                    continentObject = yield this.db
+                        .Knex("countrycontinent")
+                        .select("*")
+                        .where("countryId", country.id)
+                        .first();
+                }
                 const continent = yield this.db.continent
-                    .select()
+                    .select("*")
                     .where("id", continentObject.continentId)
                     .first();
                 return Object.assign(Object.assign({}, country), { continent });

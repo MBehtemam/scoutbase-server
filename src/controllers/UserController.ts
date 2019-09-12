@@ -6,7 +6,7 @@ import IDB from "../interfaces/IDB";
 class UserController {
   db: IDB;
   constructor() {
-    this.db = DB;
+    this.db = new DB();
   }
   async hasUserByUserName(username: string) {
     try {

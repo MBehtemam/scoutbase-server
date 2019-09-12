@@ -17,7 +17,7 @@ const secretKeys_1 = __importDefault(require("../config/secretKeys"));
 const DB_1 = __importDefault(require("../DB"));
 class UserController {
     constructor() {
-        this.db = DB_1.default;
+        this.db = new DB_1.default();
     }
     hasUserByUserName(username) {
         return __awaiter(this, void 0, void 0, function* () {

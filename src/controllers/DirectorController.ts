@@ -6,7 +6,7 @@ class DirectorController {
   db: IDB;
   countryController: any;
   constructor() {
-    this.db = DB;
+    this.db = new DB();
     this.countryController = new CountryController();
   }
   async createDirector(name: string, birthday: string, countryId: string) {

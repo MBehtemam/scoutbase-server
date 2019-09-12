@@ -16,7 +16,7 @@ const DB_1 = __importDefault(require("../DB"));
 const CountryController_1 = __importDefault(require("./CountryController"));
 class DirectorController {
     constructor() {
-        this.db = DB_1.default;
+        this.db = new DB_1.default();
         this.countryController = new CountryController_1.default();
     }
     createDirector(name, birthday, countryId) {

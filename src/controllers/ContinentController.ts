@@ -4,7 +4,7 @@ import IDB from "../interfaces/IDB";
 class ContinentController {
   db: IDB;
   constructor() {
-    this.db = DB;
+    this.db = new DB();
   }
   async getAll() {
     try {

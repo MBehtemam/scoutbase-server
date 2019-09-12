@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const DB_1 = __importDefault(require("../DB"));
 class LanguageController {
     constructor() {
-        this.db = DB_1.default;
+        this.db = new DB_1.default();
     }
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {

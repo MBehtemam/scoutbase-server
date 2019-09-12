@@ -6,7 +6,7 @@ class ActorController {
   db: IDB;
   countryController: any;
   constructor() {
-    this.db = DB;
+    this.db = new DB();
     this.countryController = new CountryController();
   }
   async createActor(name: string, birthday: string, countryId: string) {
